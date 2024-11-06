@@ -64,7 +64,7 @@ class Formatter
     {
         return new \DateTime($date->format('Y-m').'-01');
     }
-    
+
     public static function lastDayOfMonthByDate(\DateTimeInterface $date, bool $withHours = true): \DateTimeInterface
     {
         $date = new \DateTime($date->format('Y-m-t'));
