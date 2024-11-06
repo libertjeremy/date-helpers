@@ -53,9 +53,15 @@ class Formatter
         return (clone $date)->sub(new \DateInterval('P'.($date->format('N') - 1).'D'))->setTime(0, 0, 0);
     }
 
-    public static function lastDayOfWeekByDate(\DateTimeInterface $date): \DateTimeInterface
+    public static function lastDayOfWeekByDate(\DateTimeInterface $date, bool $withHours = true): \DateTimeInterface
     {
-        return (clone $date)->modify('+'.(7 - $date->format('N')).' days')->setTime(23, 59, 59);
+        $date = (clone $date)->modify('+'.(7 - $date->format('N')).' days');
+
+        if (true === $withHours) {
+            $date->setTime(23, 59, 59);
+        }
+
+        return $date;
     }
 
     public static function firstDayOfMonthByDate(\DateTimeInterface $date): \DateTimeInterface
@@ -89,13 +95,19 @@ class Formatter
         return self::firstDayOfYearByYearNumber((int)$date->format('Y'));
     }
 
-    public static function lastDayOfYearByYearNumber(int $year): \DateTimeInterface
+    public static function lastDayOfYearByYearNumber(int $year, bool $withHours = true): \DateTimeInterface
     {
-        return new \DateTime($year.'-12-31');
+        $date = new \DateTime($year.'-12-31');
+
+        if (true === $withHours) {
+            $date->setTime(23, 59, 59);
+        }
+
+        return $date;
     }
 
-    public static function lastDayOfYearByDate(\DateTimeInterface $date): \DateTimeInterface
+    public static function lastDayOfYearByDate(\DateTimeInterface $date, bool $withHours = true): \DateTimeInterface
     {
-        return self::lastDayOfYearByYearNumber((int)$date->format('Y'));
+        return self::lastDayOfYearByYearNumber((int)$date->format('Y'), $withHours);
     }
 }
