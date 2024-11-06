@@ -8,13 +8,11 @@ use LibertJeremy\DateHelpers\Date\Formatter as LibertJeremyDateFormatter;
 
 class Formatter
 {
-    public static function firstDayOfMonthByMonthNumber(int $month, ?int $year = null): \DateTimeInterface
+    public static function firstDayOfMonthByMonthNumber(int $month, int $year): \DateTimeInterface
     {
         if ($month < 1 || $month > 12) {
             throw new \InvalidArgumentException('Month number must be between 1 and 12.');
         }
-
-        $year = $year ?? (new \DateTime())->format('Y');
 
         return self::fromDayAndMonthAndYear(1, $month, $year);
     }
