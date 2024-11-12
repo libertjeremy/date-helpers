@@ -64,8 +64,10 @@ class FormatterTest extends TestCase
 
     public function testMonthByMonthNumber5(): void
     {
-        self::assertSame((new \DateTime())->format('Y').'0101000000', ($monthFromMonthNumber = Formatter::monthByMonthNumber(1))->getStartDate()->format('YmdHis'));
-        self::assertSame((new \DateTime())->format('Y').'0131235959', $monthFromMonthNumber->getEndDate()->format('YmdHis'));
+        $currentYear = (new \DateTime())->format('Y');
+
+        self::assertSame($currentYear.'0101000000', ($monthFromMonthNumber = Formatter::monthByMonthNumber(1, (int) $currentYear))->getStartDate()->format('YmdHis'));
+        self::assertSame($currentYear.'0131235959', $monthFromMonthNumber->getEndDate()->format('YmdHis'));
     }
 
     public function testMonthByMonthNumber6(): void
