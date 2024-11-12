@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace LibertJeremy\DateHelpers\Date;
 
-use LibertJeremy\DateHelpers\Date\Formatter as LibertJeremyDateFormatter;
-
 class Formatter
 {
     public static function firstDayOfMonthByMonthNumber(int $month, int $year): \DateTimeInterface
@@ -82,7 +80,7 @@ class Formatter
 
     public static function lastDayOfMonthByMonthNumber(int $month, int $year, bool $withHours = true): \DateTimeInterface
     {
-        return LibertJeremyDateFormatter::lastDayOfMonthByDate(self::firstDayOfMonthByMonthNumber($month, $year), $withHours);
+        return self::lastDayOfMonthByDate(self::firstDayOfMonthByMonthNumber($month, $year), $withHours);
     }
 
     public static function firstDayOfYearByYearNumber(int $year): \DateTimeInterface
