@@ -121,11 +121,11 @@ class Formatter
 
     public static function nextDayByDate(\DateTimeInterface $date): \DateTimeInterface
     {
-        return (clone $date)->modify('+1 day');
+        return (clone $date)->add(new \DateInterval('P1D'));
     }
 
     public static function previousDayByDate(\DateTimeInterface $date): \DateTimeInterface
     {
-        return (clone $date)->modify('-1 day');
+        return (clone $date)->sub(new \DateInterval('P1D'));
     }
 }
