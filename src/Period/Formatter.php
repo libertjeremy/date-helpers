@@ -16,8 +16,8 @@ class Formatter
         $tmpEndDate = clone $endDate;
 
         if (true === $allDay) {
-            $tmpStartDate->setTime(0, 0, 0);
-            $tmpEndDate->setTime(23, 59, 59);
+            $tmpStartDate = DateFormatter::toStartOfDay($tmpStartDate);
+            $tmpEndDate = DateFormatter::toEndOfDay($tmpEndDate);
         }
 
         return new \DatePeriod($tmpStartDate, new \DateInterval(self::DEFAULT_INTERVAL), $tmpEndDate);

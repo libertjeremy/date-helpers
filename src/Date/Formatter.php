@@ -48,7 +48,7 @@ class Formatter
 
     public static function firstDayOfWeekByDate(\DateTimeInterface $date): \DateTimeInterface
     {
-        return (clone $date)->sub(new \DateInterval('P'.($date->format('N') - 1).'D'))->setTime(0, 0, 0);
+        return self::toStartOfDay((clone $date)->sub(new \DateInterval('P'.($date->format('N') - 1).'D')));
     }
 
     public static function lastDayOfWeekByDate(\DateTimeInterface $date, bool $withHours = true): \DateTimeInterface
@@ -56,7 +56,7 @@ class Formatter
         $date = (clone $date)->modify('+'.(7 - $date->format('N')).' days');
 
         if (true === $withHours) {
-            $date->setTime(23, 59, 59);
+            $date = self::toEndOfDay($date);
         }
 
         return $date;
@@ -72,7 +72,7 @@ class Formatter
         $date = new \DateTime($date->format('Y-m-t'));
 
         if (true === $withHours) {
-            $date->setTime(23, 59, 59);
+            $date = self::toEndOfDay($date);
         }
 
         return $date;
@@ -98,7 +98,7 @@ class Formatter
         $date = new \DateTime($year.'-12-31');
 
         if (true === $withHours) {
-            $date->setTime(23, 59, 59);
+            $date = self::toEndOfDay($date);
         }
 
         return $date;
@@ -107,5 +107,15 @@ class Formatter
     public static function lastDayOfYearByDate(\DateTimeInterface $date, bool $withHours = true): \DateTimeInterface
     {
         return self::lastDayOfYearByYearNumber((int)$date->format('Y'), $withHours);
+    }
+
+    public static function toEndOfDay(\DateTimeInterface $date): \DateTimeInterface
+    {
+        return (clone $date)->setTime(23, 59, 59);
+    }
+
+    public static function toStartOfDay(\DateTimeInterface $date): \DateTimeInterface
+    {
+        return (clone $date)->setTime(0, 0, 0);
     }
 }
