@@ -118,4 +118,24 @@ class FormatterTest extends TestCase
     {
         self::assertEquals(new \DateTime('2022-02-28 23:59:59'), Formatter::fromDayAndMonthAndYearOrLastDayOfMonthIfNotExists(30, 2, 2022));
     }
+
+    public function testPreviousDayByDate1(): void
+    {
+        self::assertEquals(new \DateTime('2024-11-20'), Formatter::previousDayByDate(new \DateTime('2024-11-21')));
+    }
+
+    public function testPreviousDayByDate2(): void
+    {
+        self::assertEquals(new \DateTime('2023-12-31'), Formatter::previousDayByDate(new \DateTime('2024-01-01')));
+    }
+
+    public function testNextDayByDate1(): void
+    {
+        self::assertEquals(new \DateTime('2024-11-22'), Formatter::nextDayByDate(new \DateTime('2024-11-21')));
+    }
+
+    public function testNextDayByDate2(): void
+    {
+        self::assertEquals(new \DateTime('2025-01-01'), Formatter::nextDayByDate(new \DateTime('2024-12-31')));
+    }
 }
