@@ -118,4 +118,14 @@ class Formatter
     {
         return (clone $date)->setTime(0, 0, 0);
     }
+
+    public static function nextDayByDate(\DateTimeInterface $date): \DateTimeInterface
+    {
+        return (clone $date)->modify('+1 day');
+    }
+
+    public static function previousDayByDate(\DateTimeInterface $date): \DateTimeInterface
+    {
+        return (clone $date)->modify('-1 day');
+    }
 }
