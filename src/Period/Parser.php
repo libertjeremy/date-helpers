@@ -48,4 +48,14 @@ class Parser
 
         return DateFormatter::lastDayOfMonthByDate($datePeriodEndDate, false)->format('Ymd') === $datePeriodEndDate->format('Ymd');
     }
+
+    public static function retrieveTotalMonths(\DatePeriod $datePeriod): int
+    {
+        $endDate = $datePeriod->getEndDate();
+        $endDate = DateFormatter::nextDayByDate($endDate);
+
+        $interval = $endDate->diff($datePeriod->getStartDate());
+
+        return (int) ($interval->y * 12) + $interval->m;
+    }
 }

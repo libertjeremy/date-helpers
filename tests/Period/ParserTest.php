@@ -86,4 +86,19 @@ class ParserTest extends TestCase
     {
         self::assertTrue(Parser::isAllMonth(Formatter::fromDates(new \DateTime('2023-01-01'), new \DateTime('2023-02-28'))));
     }
+
+    public function testGetTotalMonthsFromDatePeriod1(): void
+    {
+        self::assertSame(6, Parser::retrieveTotalMonths(Formatter::fromDates(new \DateTime('2023-01-01'), new \DateTime('2023-06-30'))));
+    }
+
+    public function testGetTotalMonthsFromDatePeriod2(): void
+    {
+        self::assertSame(13, Parser::retrieveTotalMonths(Formatter::fromDates(new \DateTime('2023-01-01'), new \DateTime('2024-02-25'))));
+    }
+
+    public function testGetTotalMonthsFromDatePeriod3(): void
+    {
+        self::assertSame(12, Parser::retrieveTotalMonths(Formatter::fromDates(new \DateTime('2023-01-01'), new \DateTime('2023-12-31'))));
+    }
 }
