@@ -34,6 +34,10 @@ class Formatter
 
     public static function yearByYearNumber(int $year): \DatePeriod
     {
-        return self::fromDates(new \DateTime($year.'-01-01'), new \DateTime($year.'-12-31'), true);
+        return self::fromDates(
+            DateFormatter::firstDayOfYearByYearNumber($year),
+            DateFormatter::lastDayOfYearByYearNumber($year),
+            true
+        );
     }
 }
