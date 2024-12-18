@@ -31,4 +31,9 @@ class Formatter
             $allDay
         );
     }
+
+    public static function yearByYearNumber(int $year): \DatePeriod
+    {
+        return self::fromDates(new \DateTime($year.'-01-01'), new \DateTime($year.'-12-31'), true);
+    }
 }
