@@ -20,4 +20,9 @@ class Comparator
     {
         return (clone $date)->format('Y') > (clone $dateToCheck)->format('Y');
     }
+
+    public static function isLastDayOfWeek(\DateTimeInterface $date): bool
+    {
+        return (int)$date->format('N') === 7;
+    }
 }
