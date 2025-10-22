@@ -40,4 +40,13 @@ class Formatter
             true
         );
     }
+
+    public static function weekByDate(\DateTimeInterface $date): \DatePeriod
+    {
+        return self::fromDates(
+            DateFormatter::firstDayOfWeekByDate($date),
+            DateFormatter::lastDayOfWeekByDate($date),
+            true
+        );
+    }
 }
