@@ -8,27 +8,18 @@ class Manipulator
 {
     public static function truncate(\DatePeriod $truncatedDatePeriod, \DatePeriod $referenceDatePeriod): ?\DatePeriod
     {
-        if (($truncatedDatePeriodEndDate = $truncatedDatePeriod->getEndDate()) < ($referenceDatePeriodStartDate = $referenceDatePeriod->getStartDate())) {
+        if (($truncatedEnd = $truncatedDatePeriod->getEndDate()) < ($referenceStart = $referenceDatePeriod->getStartDate())) {
             return null;
         }
 
-        if (($truncatedDatePeriodStartDate = $truncatedDatePeriod->getStartDate()) < $referenceDatePeriodStartDate) {
-            $startDate = $referenceDatePeriodStartDate;
-        } else {
-            $startDate = $truncatedDatePeriodStartDate;
-        }
-
-        if ($truncatedDatePeriodEndDate > ($referenceDatePeriodEndDate = $referenceDatePeriod->getEndDate())) {
-            $endDate = $referenceDatePeriodEndDate;
-        } else {
-            $endDate = $truncatedDatePeriodEndDate;
-        }
-
-        if ($endDate < $startDate) {
+        if (($truncatedStart = $truncatedDatePeriod->getStartDate()) > ($referenceEnd = $referenceDatePeriod->getEndDate())) {
             return null;
         }
 
-        return Formatter::fromDates($startDate, $endDate);
+        return Formatter::fromDates(
+            max($truncatedStart, $referenceStart),
+            min($truncatedEnd, $referenceEnd)
+        );
     }
 
     /**
