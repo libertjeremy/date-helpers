@@ -79,21 +79,21 @@ class FormatterTest extends TestCase
     public function testSplitPeriodsByMonth1(): void
     {
         $datePeriods = [
-            Formatter::fromDates(new \DateTime('2024-01-01'), new \DateTime('2024-01-22')),
-            Formatter::fromDates(new \DateTime('2024-01-23'), new \DateTime('2024-07-22')),
-            Formatter::fromDates(new \DateTime('2024-07-23'), new \DateTime('2024-12-31')),
+            Formatter::fromDates(new \DateTime('2024-01-01'), new \DateTime('2024-01-22'), true),
+            Formatter::fromDates(new \DateTime('2024-01-23'), new \DateTime('2024-07-22'), true),
+            Formatter::fromDates(new \DateTime('2024-07-23'), new \DateTime('2024-12-31'), true),
         ];
 
         self::assertEquals([
-            Formatter::fromDates(new \DateTime('2024-01-01'), new \DateTime('2024-01-22')),
-            Formatter::fromDates(new \DateTime('2024-01-23'), new \DateTime('2024-01-31')),
+            Formatter::fromDates(new \DateTime('2024-01-01'), new \DateTime('2024-01-22'), true),
+            Formatter::fromDates(new \DateTime('2024-01-23'), new \DateTime('2024-01-31'), true),
             Formatter::monthByMonthNumber(2, 2024),
             Formatter::monthByMonthNumber(3, 2024),
             Formatter::monthByMonthNumber(4, 2024),
             Formatter::monthByMonthNumber(5, 2024),
             Formatter::monthByMonthNumber(6, 2024),
-            Formatter::fromDates(new \DateTime('2024-07-01'), new \DateTime('2024-07-22')),
-            Formatter::fromDates(new \DateTime('2024-07-23'), new \DateTime('2024-07-31')),
+            Formatter::fromDates(new \DateTime('2024-07-01'), new \DateTime('2024-07-22'), true),
+            Formatter::fromDates(new \DateTime('2024-07-23'), new \DateTime('2024-07-31'), true),
             Formatter::monthByMonthNumber(8, 2024),
             Formatter::monthByMonthNumber(9, 2024),
             Formatter::monthByMonthNumber(10, 2024),
@@ -105,8 +105,8 @@ class FormatterTest extends TestCase
     public function testSplitPeriodsByMonth2(): void
     {
         $datePeriods = [
-            Formatter::fromDates(new \DateTime('2024-01-01'), new \DateTime('2024-02-29')),
-            Formatter::fromDates(new \DateTime('2024-03-01'), new \DateTime('2024-04-30')),
+            Formatter::fromDates(new \DateTime('2024-01-01'), new \DateTime('2024-02-29'), true),
+            Formatter::fromDates(new \DateTime('2024-03-01'), new \DateTime('2024-04-30'), true),
         ];
 
         self::assertEquals([
@@ -120,7 +120,7 @@ class FormatterTest extends TestCase
     public function testSplitPeriodsByMonth3(): void
     {
         $datePeriods = [
-            Formatter::fromDates(new \DateTime('2024-01-01'), new \DateTime('2024-02-29')),
+            Formatter::fromDates(new \DateTime('2024-01-01'), new \DateTime('2024-02-29'), true),
         ];
 
         self::assertEquals([
@@ -151,11 +151,11 @@ class FormatterTest extends TestCase
     public function testSplitPeriodsByMonth6(): void
     {
         $datePeriods = [
-            Formatter::fromDates(new \DateTime('2024-01-10'), new \DateTime('2024-01-15')),
+            Formatter::fromDates(new \DateTime('2024-01-10'), new \DateTime('2024-01-15'), true),
         ];
 
         self::assertEquals([
-            Formatter::fromDates(new \DateTime('2024-01-10'), new \DateTime('2024-01-15'))
+            Formatter::fromDates(new \DateTime('2024-01-10'), new \DateTime('2024-01-15'), true)
         ], Formatter::splitPeriodsByMonth($datePeriods));
     }
 }

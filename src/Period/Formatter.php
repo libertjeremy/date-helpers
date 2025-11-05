@@ -79,8 +79,8 @@ class Formatter
                         (int) $currentStart->format('Y')
                     );
                 } else {
-                    // Sinon, créer une période partielle
-                    $result[] = self::fromDates(clone $currentStart, clone $currentEnd);
+                    // Période partielle : on passe true pour avoir des journées allDay (23:59:59)
+                    $result[] = self::fromDates(clone $currentStart, clone $currentEnd, true);
                 }
 
                 // Passer au premier jour du mois suivant
