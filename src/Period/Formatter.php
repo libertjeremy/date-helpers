@@ -41,6 +41,11 @@ class Formatter
         );
     }
 
+    public static function yearByDate(\DateTimeInterface $date): \DatePeriod
+    {
+        return self::yearByYearNumber((int) $date->format('Y'));
+    }
+
     public static function weekByDate(\DateTimeInterface $date): \DatePeriod
     {
         return self::fromDates(
