@@ -57,62 +57,35 @@ class Formatter
      */
     public static function splitPeriodsByMonth(array $datePeriods): array
     {
-        if (empty($datePeriods)) {
-            return [];
-        }
-
-        $earliestStart = null;
-        $latestEnd = null;
+        $result = [];
 
         foreach ($datePeriods as $period) {
             $start = $period->getStartDate();
             $end = $period->getEndDate();
 
-            if ($end === null) {
-                continue;
+            $currentStart = clone $start;
+
+            while ($currentStart <= $end) {
+                // Dernier jour du mois en cours
+                $monthEnd = new \DateTime($currentStart->format('Y-m-t'));
+
+                // Si la période se termine avant la fin du mois
+                $currentEnd = ($end < $monthEnd) ? $end : $monthEnd;
+
+                // Si c'est un mois complet (du 1er au dernier jour)
+                if ($currentStart->format('d') === '01' && $currentEnd->format('d') === $currentStart->format('t')) {
+                    $result[] = self::monthByMonthNumber(
+                        (int) $currentStart->format('m'),
+                        (int) $currentStart->format('Y')
+                    );
+                } else {
+                    // Sinon, créer une période partielle
+                    $result[] = self::fromDates(clone $currentStart, clone $currentEnd);
+                }
+
+                // Passer au premier jour du mois suivant
+                $currentStart = (clone $monthEnd)->modify('+1 day');
             }
-
-            if ($earliestStart === null || $start < $earliestStart) {
-                $earliestStart = clone $start;
-            }
-
-            if ($latestEnd === null || $end > $latestEnd) {
-                $latestEnd = clone $end;
-            }
-        }
-
-        if ($earliestStart === null || $latestEnd === null) {
-            return [];
-        }
-
-        $result = [];
-
-        $firstOfMonth = (clone $earliestStart)->modify('first day of this month')->setTime(0, 0, 0);
-        if ($earliestStart > $firstOfMonth) {
-            $headEnd = (clone $earliestStart)->modify('-1 second');
-            if ($headEnd >= $firstOfMonth) {
-                $result[] = Formatter::fromDates($firstOfMonth, $headEnd);
-            }
-        }
-
-        $current = clone $earliestStart;
-        while ($current < $latestEnd) {
-            $endOfMonth = (clone $current)->modify('last day of this month')->setTime(23, 59, 59);
-
-            $periodEnd = ($endOfMonth < $latestEnd) ? $endOfMonth : $latestEnd;
-
-            $inclusiveEnd = $periodEnd;
-
-            $result[] = Formatter::fromDates($current, $inclusiveEnd);
-
-            $current = (clone $current)->modify('first day of next month')->setTime(0, 0, 0);
-        }
-
-        $endOfLatestMonth = (clone $latestEnd)->modify('last day of this month')->setTime(23, 59, 59);
-        if ($latestEnd < $endOfLatestMonth) {
-            $tailStart = (clone $latestEnd)->modify('+1 second');
-            $tailEnd = clone $endOfLatestMonth;
-            $result[] = Formatter::fromDates($tailStart, $tailEnd);
         }
 
         return $result;
