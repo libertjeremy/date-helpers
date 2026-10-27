@@ -10,6 +10,9 @@ class Formatter
 {
     protected const DEFAULT_INTERVAL = 'P1D';
 
+    /**
+     * @return \DatePeriod<\DateTimeInterface, \DateTimeInterface, null>
+     */
     public static function fromDates(\DateTimeInterface $startDate, \DateTimeInterface $endDate, bool $allDay = false): \DatePeriod
     {
         $tmpStartDate = clone $startDate;
@@ -23,6 +26,9 @@ class Formatter
         return new \DatePeriod($tmpStartDate, new \DateInterval(self::DEFAULT_INTERVAL), $tmpEndDate);
     }
 
+    /**
+     * @return \DatePeriod<\DateTimeInterface, \DateTimeInterface, null>
+     */
     public static function monthByMonthNumber(int $month, int $year, bool $allDay = true): \DatePeriod
     {
         return self::fromDates(
@@ -32,6 +38,9 @@ class Formatter
         );
     }
 
+    /**
+     * @return \DatePeriod<\DateTimeInterface, \DateTimeInterface, null>
+     */
     public static function yearByYearNumber(int $year): \DatePeriod
     {
         return self::fromDates(
@@ -41,11 +50,17 @@ class Formatter
         );
     }
 
+    /**
+     * @return \DatePeriod<\DateTimeInterface, \DateTimeInterface, null>
+     */
     public static function yearByDate(\DateTimeInterface $date): \DatePeriod
     {
         return self::yearByYearNumber((int) $date->format('Y'));
     }
 
+    /**
+     * @return \DatePeriod<\DateTimeInterface, \DateTimeInterface, null>
+     */
     public static function weekByDate(\DateTimeInterface $date): \DatePeriod
     {
         return self::fromDates(
@@ -56,9 +71,9 @@ class Formatter
     }
 
     /**
-     * @param array<\DatePeriod> $datePeriods
+     * @param array<\DatePeriod<\DateTimeInterface, \DateTimeInterface, null>> $datePeriods
      *
-     * @return array<\DatePeriod>
+     * @return list<\DatePeriod<\DateTimeInterface, \DateTimeInterface, null>>
      */
     public static function splitPeriodsByMonth(array $datePeriods): array
     {

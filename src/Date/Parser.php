@@ -36,7 +36,7 @@ class Parser
             return false;
         }
 
-        return $dateBefore->format('Ymd') === (clone $dateToCompare)->sub(new \DateInterval('P1D'))->format('Ymd');
+        return $dateBefore->format('Ymd') === Shifter::sub($dateToCompare, new \DateInterval('P1D'))->format('Ymd');
     }
 
     /**
@@ -48,7 +48,7 @@ class Parser
             return false;
         }
 
-        return $dateAfter->format('Ymd') === (clone $dateToCompare)->add(new \DateInterval('P1D'))->format('Ymd');
+        return $dateAfter->format('Ymd') === Shifter::add($dateToCompare, new \DateInterval('P1D'))->format('Ymd');
     }
 
     public static function isBefore(\DateTimeInterface $dateBefore, \DateTimeInterface $dateToCompare): bool
