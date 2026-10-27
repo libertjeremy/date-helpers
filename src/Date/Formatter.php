@@ -25,7 +25,7 @@ class Formatter
             throw new \RuntimeException('Wrong date provided.');
         }
 
-        return new \DateTime($year.'-'.str_pad((string)$month, 2, '0', \STR_PAD_LEFT).'-'.str_pad((string)$day, 2, '0', \STR_PAD_LEFT));
+        return new \DateTime($year.'-'.str_pad((string) $month, 2, '0', \STR_PAD_LEFT).'-'.str_pad((string) $day, 2, '0', \STR_PAD_LEFT));
     }
 
     public static function fromDayAndMonthAndYearOrLastDayOfMonthIfNotExists(int $day, int $month, int $year): \DateTimeInterface
@@ -35,10 +35,10 @@ class Formatter
         }
 
         if (checkdate($month, $day, $year)) {
-            return \DateTime::createFromFormat('Y-m-d H:i:s', $year.'-'.$month.'-'.$day.' 23:59:59');
+            return self::toEndOfDay(self::fromDayAndMonthAndYear($day, $month, $year));
         }
 
-        return self::lastDayOfMonthByDate(\DateTime::createFromFormat('Y-m-d', $year.'-'.$month.'-01'), true);
+        return self::lastDayOfMonthByDate(self::firstDayOfMonthByMonthNumber($month, $year), true);
     }
 
     public static function fromWeekNumber(int $week, int $year): \DateTimeInterface
@@ -48,12 +48,12 @@ class Formatter
 
     public static function firstDayOfWeekByDate(\DateTimeInterface $date): \DateTimeInterface
     {
-        return self::toStartOfDay((clone $date)->sub(new \DateInterval('P'.($date->format('N') - 1).'D')));
+        return self::toStartOfDay(Shifter::sub($date, new \DateInterval('P'.((int) $date->format('N') - 1).'D')));
     }
 
     public static function lastDayOfWeekByDate(\DateTimeInterface $date, bool $withHours = true): \DateTimeInterface
     {
-        $date = (clone $date)->modify('+'.(7 - $date->format('N')).' days');
+        $date = Shifter::add($date, new \DateInterval('P'.(7 - (int) $date->format('N')).'D'));
 
         if (true === $withHours) {
             $date = self::toEndOfDay($date);
@@ -90,7 +90,7 @@ class Formatter
 
     public static function firstDayOfYearByDate(\DateTimeInterface $date): \DateTimeInterface
     {
-        return self::firstDayOfYearByYearNumber((int)$date->format('Y'));
+        return self::firstDayOfYearByYearNumber((int) $date->format('Y'));
     }
 
     public static function lastDayOfYearByYearNumber(int $year, bool $withHours = true): \DateTimeInterface
@@ -106,26 +106,26 @@ class Formatter
 
     public static function lastDayOfYearByDate(\DateTimeInterface $date, bool $withHours = true): \DateTimeInterface
     {
-        return self::lastDayOfYearByYearNumber((int)$date->format('Y'), $withHours);
+        return self::lastDayOfYearByYearNumber((int) $date->format('Y'), $withHours);
     }
 
     public static function toEndOfDay(\DateTimeInterface $date): \DateTimeInterface
     {
-        return (clone $date)->setTime(23, 59, 59);
+        return Shifter::setTime($date, 23, 59, 59);
     }
 
     public static function toStartOfDay(\DateTimeInterface $date): \DateTimeInterface
     {
-        return (clone $date)->setTime(0, 0, 0);
+        return Shifter::setTime($date, 0, 0, 0);
     }
 
     public static function nextDayByDate(\DateTimeInterface $date): \DateTimeInterface
     {
-        return (clone $date)->add(new \DateInterval('P1D'));
+        return Shifter::add($date, new \DateInterval('P1D'));
     }
 
     public static function previousDayByDate(\DateTimeInterface $date): \DateTimeInterface
     {
-        return (clone $date)->sub(new \DateInterval('P1D'));
+        return Shifter::sub($date, new \DateInterval('P1D'));
     }
 }

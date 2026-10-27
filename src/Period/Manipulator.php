@@ -4,8 +4,16 @@ declare(strict_types=1);
 
 namespace LibertJeremy\DateHelpers\Period;
 
+use LibertJeremy\DateHelpers\Date\Shifter;
+
 class Manipulator
 {
+    /**
+     * @param \DatePeriod<\DateTimeInterface, \DateTimeInterface, null> $truncatedDatePeriod
+     * @param \DatePeriod<\DateTimeInterface, \DateTimeInterface, null> $referenceDatePeriod
+     *
+     * @return \DatePeriod<\DateTimeInterface, \DateTimeInterface, null>|null
+     */
     public static function truncate(\DatePeriod $truncatedDatePeriod, \DatePeriod $referenceDatePeriod): ?\DatePeriod
     {
         if (($truncatedEnd = $truncatedDatePeriod->getEndDate()) < ($referenceStart = $referenceDatePeriod->getStartDate())) {
@@ -37,11 +45,9 @@ class Manipulator
      *
      * Les périodes à exclure qui se chevauchent sont fusionnées automatiquement.
      *
-     * @param array<\DatePeriod> $periods
+     * @param array<\DatePeriod<\DateTimeInterface, \DateTimeInterface, null>> $periods
      *
-     * @return array<\DatePeriod>
-     *
-     * @return array Tableau de périodes libres [['start' => DateTime, 'end' => DateTime], ...]
+     * @return list<\DatePeriod<\DateTimeInterface, \DateTimeInterface, null>>
      */
     public static function splitNonOverlappingPeriods(array $periods): array
     {
@@ -53,19 +59,14 @@ class Manipulator
         $breakpoints = [];
 
         foreach ($periods as $period) {
-            $start = clone $period->getStartDate();
-            $end = clone $period->getEndDate();
-
-            $breakpoints[] = $start;
+            $breakpoints[] = clone $period->getStartDate();
 
             // Ajouter le jour suivant la fin comme point de rupture
-            $nextDay = clone $end;
-            $nextDay->modify('+1 second');
-            $breakpoints[] = $nextDay;
+            $breakpoints[] = Shifter::add($period->getEndDate(), new \DateInterval('PT1S'));
         }
 
         // Trier les points de rupture
-        usort($breakpoints, function($a, $b) {
+        usort($breakpoints, static function ($a, $b) {
             return $a <=> $b;
         });
 
@@ -82,10 +83,9 @@ class Manipulator
 
         // Créer les périodes candidates entre chaque paire de points
         $candidatePeriods = [];
-        for ($i = 0; $i < count($uniqueBreakpoints) - 1; $i++) {
+        for ($i = 0; $i < \count($uniqueBreakpoints) - 1; ++$i) {
             $start = clone $uniqueBreakpoints[$i];
-            $end = clone $uniqueBreakpoints[$i + 1];
-            $end->modify('-1 second');
+            $end = Shifter::sub($uniqueBreakpoints[$i + 1], new \DateInterval('PT1S'));
 
             // Vérifier si cette période est couverte par au moins une période originale
             $isCovered = false;
@@ -95,6 +95,7 @@ class Manipulator
 
                 if ($start >= $origStart && $end <= $origEnd) {
                     $isCovered = true;
+
                     break;
                 }
             }

@@ -8,6 +8,9 @@ use LibertJeremy\DateHelpers\Date\Formatter as DateFormatter;
 
 class Parser
 {
+    /**
+     * @param \DatePeriod<\DateTimeInterface, \DateTimeInterface, null> $datePeriod
+     */
     public static function contains(\DatePeriod $datePeriod, \DateTimeInterface $date, bool $strict = true): bool
     {
         if (true === $strict) {
@@ -21,6 +24,10 @@ class Parser
             && $date <= $datePeriod->getEndDate();
     }
 
+    /**
+     * @param \DatePeriod<\DateTimeInterface, \DateTimeInterface, null> $checkedDatePeriod
+     * @param \DatePeriod<\DateTimeInterface, \DateTimeInterface, null> $baseDatePeriod
+     */
     public static function isGreater(\DatePeriod $checkedDatePeriod, \DatePeriod $baseDatePeriod, bool $strict = true): bool
     {
         if (true === $strict) {
@@ -34,6 +41,9 @@ class Parser
             && $checkedDatePeriod->getEndDate() <= $baseDatePeriod->getEndDate();
     }
 
+    /**
+     * @param \DatePeriod<\DateTimeInterface, \DateTimeInterface, null> $datePeriod
+     */
     public static function isAllMonth(\DatePeriod $datePeriod, bool $strict = false): bool
     {
         if (1 !== (int) $datePeriod->getStartDate()->format('d')) {
@@ -49,6 +59,9 @@ class Parser
         return DateFormatter::lastDayOfMonthByDate($datePeriodEndDate, false)->format('Ymd') === $datePeriodEndDate->format('Ymd');
     }
 
+    /**
+     * @param \DatePeriod<\DateTimeInterface, \DateTimeInterface, null> $datePeriod
+     */
     public static function retrieveTotalMonths(\DatePeriod $datePeriod): int
     {
         $endDate = $datePeriod->getEndDate();
