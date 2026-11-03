@@ -428,27 +428,27 @@ class FrenchRelativeDateParserTest extends TestCase
 
     public function testTextWithoutDateReturnsNull(): void
     {
-        self::assertNull(new FrenchRelativeDateParser()->parse('acheter du pain', $this->now()));
+        self::assertNull((new FrenchRelativeDateParser())->parse('acheter du pain', $this->now()));
     }
 
     public function testEmptyTextReturnsNull(): void
     {
-        self::assertNull(new FrenchRelativeDateParser()->parse('', $this->now()));
+        self::assertNull((new FrenchRelativeDateParser())->parse('', $this->now()));
     }
 
     public function testImpossibleCalendarDateReturnsNull(): void
     {
-        self::assertNull(new FrenchRelativeDateParser()->parse('31/02', $this->now()));
+        self::assertNull((new FrenchRelativeDateParser())->parse('31/02', $this->now()));
     }
 
     public function testNonIntegerAmountIsNotADelay(): void
     {
-        self::assertNull(new FrenchRelativeDateParser()->parse('dans 1,5 jours', $this->now()));
+        self::assertNull((new FrenchRelativeDateParser())->parse('dans 1,5 jours', $this->now()));
     }
 
     public function testHourIsNotADayOfMonth(): void
     {
-        self::assertNull(new FrenchRelativeDateParser()->parse('le 12h30', $this->now()));
+        self::assertNull((new FrenchRelativeDateParser())->parse('le 12h30', $this->now()));
     }
 
     public function testMatchedFragmentLetsTheCallerStripItFromTheSentence(): void
@@ -518,7 +518,7 @@ class FrenchRelativeDateParserTest extends TestCase
     public function testMonthDelayClampsToTheEndOfShorterMonths(): void
     {
         $now = new \DateTimeImmutable('2026-01-31 23:30:00', new \DateTimeZone('Europe/Luxembourg'));
-        $parsed = new FrenchRelativeDateParser()->parse('dans un mois', $now);
+        $parsed = (new FrenchRelativeDateParser())->parse('dans un mois', $now);
 
         self::assertNotNull($parsed);
         self::assertSame('2026-02-28', $parsed->date->format('Y-m-d'));
@@ -526,7 +526,7 @@ class FrenchRelativeDateParserTest extends TestCase
 
     private function parse(string $text): ParsedRelativeDate
     {
-        $parsed = new FrenchRelativeDateParser()->parse($text, $this->now());
+        $parsed = (new FrenchRelativeDateParser())->parse($text, $this->now());
         self::assertNotNull($parsed, \sprintf('"%s" should be recognised.', $text));
 
         return $parsed;
