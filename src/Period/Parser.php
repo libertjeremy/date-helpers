@@ -25,8 +25,8 @@ class Parser
     }
 
     /**
-     * @param \DatePeriod<\DateTimeInterface, \DateTimeInterface, null> $checkedDatePeriod
-     * @param \DatePeriod<\DateTimeInterface, \DateTimeInterface, null> $baseDatePeriod
+     * @param \DatePeriod<\DateTimeInterface, \DateTimeInterface|null, int|null> $checkedDatePeriod
+     * @param \DatePeriod<\DateTimeInterface, \DateTimeInterface|null, int|null> $baseDatePeriod
      */
     public static function isGreater(\DatePeriod $checkedDatePeriod, \DatePeriod $baseDatePeriod, bool $strict = true): bool
     {
